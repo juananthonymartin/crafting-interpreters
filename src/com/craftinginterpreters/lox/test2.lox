@@ -1,0 +1,91 @@
+var b = 123;
+{
+  fun add(a, b, c) {
+    return a + b + c;
+  }
+
+  fun add(a, b, c) {
+    return a - b - c;
+  }
+
+  print add(3,2,1);
+}
+
+
+fun add(a, b, c) {
+  return a + b + c;
+}
+
+fun add(a, b, c) {
+  return a - b - c;
+}
+
+var a = add(3,2,1);
+print a;
+
+var a = "global2";
+{
+  fun showA() {
+    print a;
+  }
+
+  showA();
+
+  var a = "block";
+
+  showA();
+}
+
+
+fun thrice(fn1, fn2) {
+  for (var i = 1; i <= 3; i = i + 1) {
+    fn1(i);
+    fn2(i);
+  }
+}
+
+thrice(fun (a) {
+  print "a: " + a;
+}, fun (b) {
+  print "b: " + b*2;
+});
+
+
+
+fun add(a, b) {
+  var res = a + b;
+  print res;
+  return res;
+}
+
+add(1, 2);
+
+
+
+fun thrice(fn) {
+  for (var i = 1; i <= 3; i = i + 1) {
+    fn(i);
+  }
+}
+
+thrice(fun (a) {
+  print a;
+});
+
+
+
+
+
+fun makeCounter() {
+  var i = 0;
+  fun count() {
+    i = i + 1;
+    print i;
+  }
+
+  return count;
+}
+
+var counter = makeCounter();
+counter(); // "1".
+counter(); // "2".
