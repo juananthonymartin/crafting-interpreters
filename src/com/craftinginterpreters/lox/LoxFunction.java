@@ -42,7 +42,6 @@ class LoxFunction implements LoxCallable {
 		}
 
 		try {
-			System.out.println("Executing block w/ parent env " + environment.id);
 			interpreter.executeBlock(declaration.body, environment);
 		} catch (Return returnValue) {
 			if (isInitializer) return closure.getAt(0, "this");
