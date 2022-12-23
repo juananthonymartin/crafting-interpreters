@@ -1,0 +1,9 @@
+Eclipse Shortcuts  
+----------------
+ Go back to prev location change to -> Controld + Q
+ Open declaration -> F3 
+
+
+-----------
+Edit shorcut 
+shift + right = shift + down

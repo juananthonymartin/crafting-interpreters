@@ -1,4 +1,3 @@
-var name = "Juan";
-var name2 = "Juan2";
-print name2;
-
+fun notAMethod() {
+  print this;
+}

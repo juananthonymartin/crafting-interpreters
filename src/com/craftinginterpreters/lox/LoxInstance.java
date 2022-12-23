@@ -13,7 +13,6 @@ class LoxInstance {
 	}
 	
 	LoxInstance(String klassName) {
-		System.out.println("Calling LoxInstance default constructor for " + klassName);
 		this.klassName = klassName;
 	}
 
