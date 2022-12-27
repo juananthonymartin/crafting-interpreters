@@ -87,6 +87,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	}
 
 	private Object lookUpVariable(Token name, Expr expr) {
+		System.out.println("trying to get " + name.lexeme);
 		Integer distance = locals.get(expr);
 		if (distance != null) {
 			return environment.getAt(distance, name.lexeme);
@@ -214,12 +215,24 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 			throw new RuntimeError(expr.paren,
 					"Expected " + function.arity() + " arguments but got " + arguments.size() + ".");
 		}
+		
 		return function.call(this, arguments);
 	}
 
 	@Override
 	public Object visitGetExpr(Expr.Get expr) {
 		Object object = evaluate(expr.object);
+		
+		if (object instanceof LoxClass) { 
+			var loxClass = ((LoxClass)object);
+			System.out.println("class is static" + ((LoxClass)object).hasStaticMethods());
+			
+			if (loxClass.hasStaticMethods()) {
+				return loxClass.getStaticInstace().get(expr.name);
+			}
+			
+		}
+		
 		if (object instanceof LoxInstance) {
 			return ((LoxInstance) object).get(expr.name);
 		}
@@ -364,15 +377,22 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	@Override
 	public Void visitClassStmt(Stmt.Class stmt) {
 		environment.define(stmt.name.lexeme, null);
-
+		
+		Boolean hasStaticMethods = false;
 		Map<String, LoxFunction> methods = new HashMap<>();
 		for (Stmt.Function method : stmt.methods) {
 			LoxFunction function = new LoxFunction(method, environment,
-			          method.name.lexeme.equals("init"));			
+			          method.name.lexeme.equals("init"));
 			methods.put(method.name.lexeme, function);
+			
+			if (method.isStatic) hasStaticMethods = true;
 		}
 
-		LoxClass klass = new LoxClass(stmt.name.lexeme, methods);
+		LoxClass klass;
+		
+
+		klass = new LoxClass(stmt.name.lexeme, methods, hasStaticMethods);
+		
 		environment.assign(stmt.name, klass);
 		return null;
 	}

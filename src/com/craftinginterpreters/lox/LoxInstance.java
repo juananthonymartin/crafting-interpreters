@@ -21,7 +21,10 @@ class LoxInstance {
 			return fields.get(name.lexeme);
 		}
 
-		LoxFunction method = klass.findMethod(name.lexeme);
+		System.out.println("Finding method " + name.lexeme); 
+		
+		LoxFunction method = klass.findMethod(name.lexeme);		
+		
 		if (method != null)
 			return method.bind(this);
 

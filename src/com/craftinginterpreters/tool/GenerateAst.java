@@ -31,7 +31,7 @@ public class GenerateAst {
 					      		"Class      : Token name, List<Stmt.Function> methods",
 						  		"Break      : ",  // <--
 						  		"Expression : Expr expression",
-						  		"Function   : Token name, Expr.Function function",
+						  		"Function   : Token name, Expr.Function function, Boolean isStatic",
 						  		"If         : Expr condition, Stmt thenBranch," +
 						                    " Stmt elseBranch",
 						  		"Print      : Expr expression",

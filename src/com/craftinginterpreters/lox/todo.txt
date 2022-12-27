@@ -1,5 +1,7 @@
 Eclipse Shortcuts  
 ----------------
+Home and End
+
  Go back to prev location change to -> Controld + Q
  Open declaration -> F3 
 
@@ -7,3 +9,6 @@ Eclipse Shortcuts
 -----------
 Edit shorcut 
 shift + right = shift + down
+
+-------- 
+Control + Click in edge -> open link
