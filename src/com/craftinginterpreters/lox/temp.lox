@@ -1,0 +1,51 @@
+class Foo {
+  init(a, b) {
+    print "init"; // expect: init
+    this.a = a;
+    this.b = b;
+  }
+  
+  methodSum() {
+  	print this.a + this.b; 
+  }
+  
+  methodStringConcat() {
+
+  	print "" + this.a + "|" + this.b; 
+  }
+}
+
+var foo; 
+foo = Foo(1, 2);
+
+foo.methodSum();
+foo.methodStringConcat();
+
+
+(class Foo (fun init(a b) (Stmt.print init)(; (Set.Expr this a a))(; (Set.Expr this b b))) (fun methodSum() (Stmt.print (+ (Get.Expr this a) (Get.Expr this b)))) (fun methodStringConcat() (Stmt.print (+ (+ (+  (Get.Expr this a)) |) (Get.Expr this b)))))
+(Stmt.var foo)
+(; (AssignExpr foo (Expr.call Foo  1.0 2.0))) Expr.call -> Initilizes LoxIntance in class, and return Lox Instance
+(; (Expr.call (Get.Expr foo methodSum) ))
+(; (Expr.call (Get.Expr foo methodStringConcat) ))
+
+-----------------------------------------------
+
+class FooV2 {
+  methodSum() {
+  	print this.a + this.b; 
+  }
+  
+  methodStringConcat() {
+
+  	print "" + this.a + "|" + this.b; 
+  }
+  
+   class square(n) {
+     return n * n;
+   }
+}
+
+print FooV2.square(3);
+
+(class FooV2 (fun methodSum() (Stmt.print (+ (Get.Expr this a) (Get.Expr this b)))) (fun methodStringConcat() (Stmt.print (+ (+ (+  (Get.Expr this a)) |) (Get.Expr this b)))) (fun square(n) (Stmt.return (* n n))))
+(Stmt.print (Expr.call (Get.Expr FooV2 square)  3.0)) 

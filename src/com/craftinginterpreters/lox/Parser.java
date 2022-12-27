@@ -34,7 +34,7 @@ class Parser {
 				return classDeclaration();
 			if (check(FUN) && checkNext(IDENTIFIER)) {
 				consume(FUN, null);
-				return function("function");
+				return function("function", false);
 			}
 			if (match(VAR))
 				return varDeclaration();
@@ -52,7 +52,12 @@ class Parser {
 
 		List<Stmt.Function> methods = new ArrayList<>();
 		while (!check(RIGHT_BRACE) && !isAtEnd()) {
-			methods.add(function("method"));
+			
+  			if (match(CLASS)) {
+  				methods.add(function("static method", true));
+  			} else {
+  				methods.add(function("method", false));
+  			}
 		}
 
 		consume(RIGHT_BRACE, "Expect '}' after class body.");
@@ -217,9 +222,9 @@ class Parser {
 		return new Stmt.Expression(expr);
 	}
 
-	private Stmt.Function function(String kind) {
+	private Stmt.Function function(String kind, Boolean isStatic) {
 		Token name = consume(IDENTIFIER, "Expect " + kind + " name.");
-		return new Stmt.Function(name, functionBody(kind));
+		return new Stmt.Function(name, functionBody(kind), isStatic);
 	}
 
 	private Expr.Function functionBody(String kind) {

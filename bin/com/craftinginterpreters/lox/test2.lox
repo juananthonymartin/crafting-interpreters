@@ -1,91 +1,70 @@
-var b = 123;
-{
-  fun add(a, b, c) {
-    return a + b + c;
+class FooV2 {
+  methodSum() {
+  	print this.a + this.b; 
   }
+  
+  methodStringConcat() {
 
-  fun add(a, b, c) {
-    return a - b - c;
+  	print "" + this.a + "|" + this.b; 
   }
-
-  print add(3,2,1);
+  
+   class square(n) {
+     return n * n;
+   }
 }
 
+print FooV2.square(3);
 
-fun add(a, b, c) {
-  return a + b + c;
-}
+-------^^^^^^^----------------
 
-fun add(a, b, c) {
-  return a - b - c;
-}
-
-var a = add(3,2,1);
-print a;
-
-var a = "global2";
-{
-  fun showA() {
-    print a;
+class Foo {
+  init(a, b) {
+    print "init"; // expect: init
+    this.a = a;
+    this.b = b;
   }
+  
+  methodSum() {
+  	print this.a + this.b; 
+  }
+  
+  methodStringConcat() {
 
-  showA();
-
-  var a = "block";
-
-  showA();
-}
-
-
-fun thrice(fn1, fn2) {
-  for (var i = 1; i <= 3; i = i + 1) {
-    fn1(i);
-    fn2(i);
+  	print "" + this.a + "|" + this.b; 
   }
 }
 
-thrice(fun (a) {
-  print "a: " + a;
-}, fun (b) {
-  print "b: " + b*2;
-});
+var foo = Foo(1, 2);
+
+foo.methodSum();
+foo.methodStringConcat();
 
 
 
-fun add(a, b) {
-  var res = a + b;
-  print res;
-  return res;
-}
+var foo2 = Foo(2, 3);
 
-add(1, 2);
+foo2.methodSum();
+foo2.methodStringConcat();
 
 
+class FooV2 {
+  methodSum() {
+  	print this.a + this.b; 
+  }
+  
+  methodStringConcat() {
 
-fun thrice(fn) {
-  for (var i = 1; i <= 3; i = i + 1) {
-    fn(i);
+  	print "" + this.a + "|" + this.b; 
   }
 }
 
-thrice(fun (a) {
-  print a;
-});
+var foov2 = FooV2();
+foov2.a = 2;
+foov2.b = 3;
 
+foov2.methodSum();
+foov2.methodStringConcat();
 
+FooV2.
+ 
 
-
-
-fun makeCounter() {
-  var i = 0;
-  fun count() {
-    i = i + 1;
-    print i;
-  }
-
-  return count;
-}
-
-var counter = makeCounter();
-counter(); // "1".
-counter(); // "2".

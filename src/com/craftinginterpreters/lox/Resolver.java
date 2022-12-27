@@ -48,7 +48,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 		define(stmt.name);
 
 		beginScope();
-		scopes.peek().put("this", new Variable(new Token(TokenType.THIS, "this", null, 1), VariableState.DEFINED));
+		scopes.peek().put("this", new Variable(new Token(TokenType.THIS, "this", null, 1), VariableState.READ)); //TODO: update
 
 		for (Stmt.Function method : stmt.methods) {
 			FunctionType declaration = FunctionType.METHOD;
