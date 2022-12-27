@@ -65,13 +65,13 @@ public class Lox {
 
 	    // PRINT STATEMENTS AFTER PARSER		
 
-		for (Iterator iterator = statements.iterator(); iterator.hasNext();) {
-			Stmt stmt = (Stmt) iterator.next();
-			System.out.println(new AstExprPrinter().print(stmt));
-
-		}
+//		for (Iterator iterator = statements.iterator(); iterator.hasNext();) {
+//			Stmt stmt = (Stmt) iterator.next();
+//			System.out.println(new AstExprPrinter().print(stmt));
+//
+//		}
 		
-		System.out.println("---------------PARSER DONE---------------");
+//		System.out.println("---------------PARSER DONE---------------");
 
 		// Stop if there was a syntax error.
 		if (hadError)

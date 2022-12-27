@@ -87,7 +87,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	}
 
 	private Object lookUpVariable(Token name, Expr expr) {
-		System.out.println("trying to get " + name.lexeme);
 		Integer distance = locals.get(expr);
 		if (distance != null) {
 			return environment.getAt(distance, name.lexeme);
@@ -225,12 +224,12 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 		
 		if (object instanceof LoxClass) { 
 			var loxClass = ((LoxClass)object);
-			System.out.println("class is static" + ((LoxClass)object).hasStaticMethods());
 			
 			if (loxClass.hasStaticMethods()) {
 				return loxClass.getStaticInstace().get(expr.name);
 			}
 			
+			//TODO: only allow for static methods
 		}
 		
 		if (object instanceof LoxInstance) {
@@ -388,10 +387,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 			if (method.isStatic) hasStaticMethods = true;
 		}
 
-		LoxClass klass;
-		
-
-		klass = new LoxClass(stmt.name.lexeme, methods, hasStaticMethods);
+		LoxClass klass = new LoxClass(stmt.name.lexeme, methods, hasStaticMethods);
 		
 		environment.assign(stmt.name, klass);
 		return null;

@@ -20,8 +20,6 @@ class LoxInstance {
 		if (fields.containsKey(name.lexeme)) {
 			return fields.get(name.lexeme);
 		}
-
-		System.out.println("Finding method " + name.lexeme); 
 		
 		LoxFunction method = klass.findMethod(name.lexeme);		
 		

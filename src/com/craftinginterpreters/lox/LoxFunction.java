@@ -3,7 +3,7 @@ package com.craftinginterpreters.lox;
 import java.util.List;
 
 class LoxFunction implements LoxCallable {
-	public final String name;;
+	private final String name;;
 	private final Expr.Function declaration;
 	private final Environment closure;
 
