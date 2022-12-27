@@ -93,7 +93,7 @@ class AstExprPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
 
 	@Override
 	public String visitAssignExpr(Expr.Assign expr) {
-		return parenthesize2("=", expr.name.lexeme, expr.value);
+		return parenthesize2("AssignExpr", expr.name.lexeme, expr.value);
 	}
 
 	@Override
@@ -131,7 +131,7 @@ class AstExprPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
 	/*
 	 * private String parenthesize3(String name, Arg... exprs) { if }
 	 */
-	
+
 	private String parenthesize(String name, Expr... exprs) {
 		StringBuilder builder = new StringBuilder();
 
@@ -232,14 +232,6 @@ class AstExprPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
 	}
 
 	@Override
-	public String visitFunctionStmt(Function stmt) {
-		throw new UnsupportedOperationException("not supported yet");
-//		var name = stmt.name;
-//		
-//		return parenthesize2("fun", name != null ? name.lexeme.toUpperCase() : "ANON", "args(", stmt.parameters, ")",stmt.body);
-	}
-
-	@Override
 	public String visitCallExpr(Call expr) {
 		return parenthesize2("Expr.call", expr.callee, expr.arguments);
 	}
@@ -250,33 +242,60 @@ class AstExprPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
 	}
 
 	@Override
+	public String visitFunctionStmt(Stmt.Function stmt) {
+		StringBuilder builder = new StringBuilder();
+		
+		String firstLine = "(Function.Stmt" + stmt.name.lexeme + "(";;
+		
+		builder.append(firstLine);
+
+		for (Token param : stmt.function.parameters) {
+			if (param != stmt.function.parameters.get(0))
+				builder.append(" ");
+			builder.append(param.lexeme);
+		}
+
+		builder.append(") ");
+
+		for (Stmt body : stmt.function.body) {
+			builder.append(body.accept(this));
+		}
+
+		builder.append(")");
+		return builder.toString();
+	}
+	
+
+	@Override
 	public String visitFunctionExpr(com.craftinginterpreters.lox.Expr.Function expr) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String visitClassStmt(Class stmt) {
-		// TODO Auto-generated method stub
-		return null;
+	public String visitClassStmt(Stmt.Class stmt) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("(class " + stmt.name.lexeme);
+
+		for (Stmt.Function method : stmt.methods) {
+			builder.append(" " + print(method));
+		}
+
+		builder.append(")");
+		return builder.toString();
 	}
 
 	@Override
-	public String visitGetExpr(Get expr) {
-		// TODO Auto-generated method stub
-		return null;
+	public String visitGetExpr(Expr.Get expr) {
+		return parenthesize2("Get.Expr", expr.object, expr.name.lexeme);
 	}
 
 	@Override
-	public String visitSetExpr(Set expr) {
-		// TODO Auto-generated method stub
-		return null;
+	public String visitSetExpr(Expr.Set expr) {
+		return parenthesize2("Set.Expr", expr.object, expr.name.lexeme, expr.value);
 	}
 
 	@Override
-	public String visitThisExpr(This expr) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-}
+	public String visitThisExpr(Expr.This expr) {
+		return "this";
+	}}
