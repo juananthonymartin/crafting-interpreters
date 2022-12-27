@@ -7,13 +7,12 @@ class LoxClass extends LoxInstance implements LoxCallable {
 	final String name;
 	private final Map<String, LoxFunction> methods;
 
-	LoxClass(String name, Map<String, LoxFunction> methods) {
-		super(name);
+	LoxClass(LoxClass metaclass, String name, Map<String, LoxFunction> methods) {
+		super(metaclass);
 		this.name = name;
 		this.methods = methods;
-		
 	}
-	
+
 	LoxFunction findMethod(String name) {
 		if (methods.containsKey(name)) {
 			return methods.get(name);
@@ -30,19 +29,20 @@ class LoxClass extends LoxInstance implements LoxCallable {
 	@Override
 	public int arity() {
 		LoxFunction initializer = findMethod("init");
-	    if (initializer == null) return 0;
-	    return initializer.arity();	
+		if (initializer == null)
+			return 0;
+		return initializer.arity();
 	}
 
 	@Override
 	public Object call(Interpreter interpreter, List<Object> arguments) {
 		LoxInstance instance = new LoxInstance(this);
 		LoxFunction initializer = findMethod("init");
-	    
+
 		if (initializer != null) {
-	      initializer.bind(instance).call(interpreter, arguments);
-	    }
-	    
+			initializer.bind(instance).call(interpreter, arguments);
+		}
+
 		return instance;
 	}
 }

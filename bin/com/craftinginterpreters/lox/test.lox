@@ -1,3 +1,16 @@
-fun notAMethod() {
-  print this;
+class FooV2 {
+  methodSum() {
+  	print this.a + this.b; 
+  }
+  
+  methodStringConcat() {
+
+  	print "" + this.a + "|" + this.b; 
+  }
+  
+   class square(n) {
+     return n * n;
+   }
 }
+
+ print FooV2.square(4);
