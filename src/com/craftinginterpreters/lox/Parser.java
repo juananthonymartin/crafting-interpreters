@@ -225,23 +225,30 @@ class Parser {
 	}
 
 	private Expr.Function functionBody(String kind) {
-		consume(LEFT_PAREN, "Expect '(' after " + kind + " name.");
-		List<Token> parameters = new ArrayList<>();
-		if (!check(RIGHT_PAREN)) {
-			do {
-				if (parameters.size() >= 8) {
-					error(peek(), "Can't move more than 8 parameters");
-				}
+		
+		if (match(LEFT_BRACE)) {
+			List<Stmt> body = block();
+			return new Expr.Function(null, body);
+		} else {
+			consume(LEFT_PAREN, "Expect '(' after " + kind + " name.");
+			List<Token> parameters = new ArrayList<>();
+			if (!check(RIGHT_PAREN)) {
+				do {
+					if (parameters.size() >= 8) {
+						error(peek(), "Can't move more than 8 parameters");
+					}
 
-				parameters.add(consume(IDENTIFIER, "Expect parameter name"));
-			} while (match(COMMA));
+					parameters.add(consume(IDENTIFIER, "Expect parameter name"));
+				} while (match(COMMA));
+			}
+
+			consume(RIGHT_PAREN, "Expect ')' after paramters.");
+
+			consume(LEFT_BRACE, "Expect '{' " + kind + "body.");
+			List<Stmt> body = block();
+			return new Expr.Function(parameters, body);
+
 		}
-
-		consume(RIGHT_PAREN, "Expect ')' after paramters.");
-
-		consume(LEFT_BRACE, "Expect '{' " + kind + "body.");
-		List<Stmt> body = block();
-		return new Expr.Function(parameters, body);
 	}
 
 	/*

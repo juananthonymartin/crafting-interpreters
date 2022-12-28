@@ -245,18 +245,29 @@ class AstExprPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
 	public String visitFunctionStmt(Stmt.Function stmt) {
 		StringBuilder builder = new StringBuilder();
 		
-		String firstLine = "(Function.Stmt" + stmt.name.lexeme + "(";;
+		var setterOrGetter = stmt.function.parameters == null;
 		
+		String firstLine = "(Function.Stmt" + stmt.name.lexeme; 
+		if (!setterOrGetter) {
+			firstLine += "(";
+		}		
+			
 		builder.append(firstLine);
 
-		for (Token param : stmt.function.parameters) {
-			if (param != stmt.function.parameters.get(0))
-				builder.append(" ");
-			builder.append(param.lexeme);
+		//setters and getters don't have parameters
+		if (!setterOrGetter) {
+			for (Token param : stmt.function.parameters) {
+				if (param != stmt.function.parameters.get(0))
+					builder.append(" ");
+				builder.append(param.lexeme);
+			}
+
 		}
-
-		builder.append(") ");
-
+			
+		if (!setterOrGetter) {
+			builder.append(") ");
+		}
+		
 		for (Stmt body : stmt.function.body) {
 			builder.append(body.accept(this));
 		}

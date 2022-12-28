@@ -34,6 +34,10 @@ class LoxClass extends LoxInstance implements LoxCallable {
 		return initializer.arity();
 	}
 
+	// Triggered After after parsing Expr.Call
+	// Method creates new LoxInstance
+	// If there's an initiliazers binds it to the instance and calls it.
+	// Return new lox instance
 	@Override
 	public Object call(Interpreter interpreter, List<Object> arguments) {
 		LoxInstance instance = new LoxInstance(this);

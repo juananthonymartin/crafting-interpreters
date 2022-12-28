@@ -221,6 +221,21 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	public Object visitGetExpr(Expr.Get expr) {
 		Object object = evaluate(expr.object);
 		if (object instanceof LoxInstance) {
+			
+			var result = ((LoxInstance) object).get(expr.name);
+			
+			if (result instanceof LoxFunction) {
+				System.out.println("here1");
+				if (((LoxFunction)result).noParameterList()) {
+					System.out.println("here2");
+					var value = ((LoxFunction)result).call(this, null);
+					System.out.println("value" + value);
+					((LoxInstance) object).set(expr.name, value);
+					return value;
+				}
+				
+			}
+			
 			return ((LoxInstance) object).get(expr.name);
 		}
 

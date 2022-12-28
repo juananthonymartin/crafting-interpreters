@@ -18,12 +18,15 @@ class LoxInstance {
 
 	Object get(Token name) {
 		if (fields.containsKey(name.lexeme)) {
+			System.out.println("Found field with matching name: " + name.lexeme);
 			return fields.get(name.lexeme);
 		}
 
 		LoxFunction method = klass.findMethod(name.lexeme);
-		if (method != null)
+		if (method != null) {
 			return method.bind(this);
+		}
+			
 
 		throw new RuntimeError(name, "Undefined property '" + name.lexeme + "'.");
 	}

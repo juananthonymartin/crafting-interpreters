@@ -1,16 +1,24 @@
-class FooV2 {
-  methodSum() {
-  	print this.a + this.b; 
+class Circle {
+  init(radius) {
+    this.radius = radius;
   }
-  
-  methodStringConcat() {
 
-  	print "" + this.a + "|" + this.b; 
+//  area {
+  //  return 3.141592653 * this.radius * this.radius;
+  //}
+  
+  area2(r) {
+  	print "r: " + r;
+  	return 3.141592653 * this.radius * this.radius;
   }
   
-   class square(n) {
-     return n * n;
-   }
+  area {
+    return 3.141592653 * this.radius * this.radius;
+  }
 }
 
- print FooV2.square(4);
+var circle = Circle(4);
+print circle.area2(4); // Prints roughly "50.2655".
+print circle.area; // Prints roughly "50.2655".
+print circle.area; 
+print circle.area; 
