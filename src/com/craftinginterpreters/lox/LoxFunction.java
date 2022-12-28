@@ -23,6 +23,10 @@ class LoxFunction implements LoxCallable {
 		this.isInitializer = isInitializer;
 	}
 
+	public boolean isGetter() {
+		return declaration.parameters == null;
+	}
+
 	LoxFunction bind(LoxInstance instance) {
 		Environment environment = new Environment(closure);
 		environment.define("this", instance);
@@ -37,18 +41,23 @@ class LoxFunction implements LoxCallable {
 	@Override
 	public Object call(Interpreter interpreter, List<Object> arguments) {
 		Environment environment = new Environment(closure);
-		for (int i = 0; i < declaration.parameters.size(); i++) {
-			environment.define(declaration.parameters.get(i).lexeme, arguments.get(i));
+
+		if (declaration.parameters != null) {
+			for (int i = 0; i < declaration.parameters.size(); i++) {
+				environment.define(declaration.parameters.get(i).lexeme, arguments.get(i));
+			}
 		}
 
 		try {
 			interpreter.executeBlock(declaration.body, environment);
 		} catch (Return returnValue) {
-			if (isInitializer) return closure.getAt(0, "this");
+			if (isInitializer)
+				return closure.getAt(0, "this");
 			return returnValue.value;
 		}
-		
-		if (isInitializer) return closure.getAt(0, "this");
+
+		if (isInitializer)
+			return closure.getAt(0, "this");
 		return null;
 	}
 

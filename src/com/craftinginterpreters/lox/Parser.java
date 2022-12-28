@@ -54,7 +54,7 @@ class Parser {
 		List<Stmt.Function> methods = new ArrayList<>();
 		while (!check(RIGHT_BRACE) && !isAtEnd()) {
 			boolean isClassMethod = match(CLASS);
-			(isClassMethod ? classMethods: methods).add(function("method"));
+			(isClassMethod ? classMethods : methods).add(function("method"));
 		}
 
 		consume(RIGHT_BRACE, "Expect '}' after class body.");
@@ -225,19 +225,23 @@ class Parser {
 	}
 
 	private Expr.Function functionBody(String kind) {
-		consume(LEFT_PAREN, "Expect '(' after " + kind + " name.");
-		List<Token> parameters = new ArrayList<>();
-		if (!check(RIGHT_PAREN)) {
-			do {
-				if (parameters.size() >= 8) {
-					error(peek(), "Can't move more than 8 parameters");
-				}
+		List<Token> parameters = null;
 
-				parameters.add(consume(IDENTIFIER, "Expect parameter name"));
-			} while (match(COMMA));
+		if (check(LEFT_PAREN)) {
+			consume(LEFT_PAREN, "Expect '(' after " + kind + " name.");
+			parameters = new ArrayList<>();
+			if (!check(RIGHT_PAREN)) {
+				do {
+					if (parameters.size() >= 8) {
+						error(peek(), "Can't move more than 8 parameters");
+					}
+
+					parameters.add(consume(IDENTIFIER, "Expect parameter name"));
+				} while (match(COMMA));
+			}
+
+			consume(RIGHT_PAREN, "Expect ')' after paramters.");
 		}
-
-		consume(RIGHT_PAREN, "Expect ')' after paramters.");
 
 		consume(LEFT_BRACE, "Expect '{' " + kind + "body.");
 		List<Stmt> body = block();
