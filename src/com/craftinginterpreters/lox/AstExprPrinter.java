@@ -12,6 +12,7 @@ import com.craftinginterpreters.lox.Expr.Grouping;
 import com.craftinginterpreters.lox.Expr.Literal;
 import com.craftinginterpreters.lox.Expr.Logical;
 import com.craftinginterpreters.lox.Expr.Set;
+import com.craftinginterpreters.lox.Expr.Super;
 import com.craftinginterpreters.lox.Expr.This;
 import com.craftinginterpreters.lox.Expr.Unary;
 import com.craftinginterpreters.lox.Expr.Variable;
@@ -298,4 +299,10 @@ class AstExprPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
 	@Override
 	public String visitThisExpr(Expr.This expr) {
 		return "this";
+	}
+
+	@Override
+	public String visitSuperExpr(Super expr) {
+		// TODO Auto-generated method stub
+		return null;
 	}}
