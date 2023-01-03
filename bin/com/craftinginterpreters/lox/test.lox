@@ -1,14 +1,45 @@
-class Doughnut {
-  cook() {
-    print "Fry until golden brown.";
+class A {
+  cookA() {
+    print "Cook in A";
   }
 }
 
-class BostonCream < Doughnut {
-  cook() {
-    super.cook();
-    print "Pipe full of custard and coat with chocolate.";
+class B {
+  cookB() {
+    print "Cook in B";
   }
 }
 
-BostonCream().cook();
+class C < A < B {
+  cookC() {
+    super.cookA();
+    super.cookB();
+    print "Cook in C";
+  }
+}
+
+C().cookC();
+
+
+class D < A {
+	DiamondProblem() {
+    	print "Here in D";
+  	}
+}
+
+
+class E < A {
+	DiamondProblem() {
+    	print "Here in E";
+  	}
+}
+
+class F < D < E {
+	DiamondProblem() {
+	    super.DiamondProblem();
+    	print "Here in E";
+  	}
+}
+
+F().DiamondProblem();
+

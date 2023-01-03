@@ -131,11 +131,15 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	@Override
 	public Object visitSuperExpr(Expr.Super expr) {
 		int distance = locals.get(expr);
-		LoxClass superclass = (LoxClass) environment.getAt(distance, "super");
+		ArrayList<LoxClass> superclasses = (ArrayList<LoxClass>) environment.getAt(distance, "super");
 
 		LoxInstance object = (LoxInstance) environment.getAt(distance - 1, "this");
 
-		LoxFunction method = superclass.findMethod(expr.method.lexeme);
+		LoxFunction method = null;
+		for (LoxClass loxClass : superclasses) {
+			method = loxClass.findMethod(expr.method.lexeme);
+			if (method != null) break;
+		}
 
 		if (method == null) {
 			throw new RuntimeError(expr.method, "Undefined property '" + expr.method.lexeme + "'.");
@@ -385,19 +389,22 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
 	@Override
 	public Void visitClassStmt(Stmt.Class stmt) {
-		Object superclass = null;
-		if (stmt.superclass != null) {
-			superclass = evaluate(stmt.superclass);
-			if (!(superclass instanceof LoxClass)) {
-				throw new RuntimeError(stmt.superclass.name, "Superclass must be a class.");
-			}
+		var superclasses = new ArrayList<LoxClass>();
+		if (stmt.superclasses != null) {
+			for (Expr.Variable superclassVariable : stmt.superclasses) {
+				Object superclassObject = evaluate(superclassVariable);
+				if (!(superclassObject instanceof LoxClass)) {
+					throw new RuntimeError(superclassVariable.name, "Superclass must be a class.");
+				}
+				superclasses.add((LoxClass)superclassObject);
+			}			
 		}
 
 		environment.define(stmt.name.lexeme, null);
 
-		if (stmt.superclass != null) {
+		if (stmt.superclasses != null) {
 			environment = new Environment(environment);
-			environment.define("super", superclass);
+			environment.define("super", superclasses);
 		}
 
 		Map<String, LoxFunction> classMethods = new HashMap<>();
@@ -414,9 +421,9 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 			methods.put(method.name.lexeme, function);
 		}
 
-		LoxClass klass = new LoxClass(metaclass, (LoxClass) superclass, stmt.name.lexeme, methods);
+		LoxClass klass = new LoxClass(metaclass, superclasses, stmt.name.lexeme, methods);
 
-		if (superclass != null) {
+		if (superclasses != null) {
 			environment = environment.enclosing;
 		}
 

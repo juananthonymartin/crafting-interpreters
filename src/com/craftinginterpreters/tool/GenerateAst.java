@@ -29,7 +29,7 @@ public class GenerateAst {
 
 		defineAst(outputDir, "Stmt", 
 				  Arrays.asList("Block      : List<Stmt> statements",
-					      		"Class      : Token name, Expr.Variable superclass, List<Stmt.Function> methods, List<Stmt.Function> classMethods",
+					      		"Class      : Token name, ArrayList<Expr.Variable> superclasses, List<Stmt.Function> methods, List<Stmt.Function> classMethods",
 						  		"Break      : ",  // <--
 						  		"Expression : Expr expression",
 						  		"Function   : Token name, Expr.Function function",

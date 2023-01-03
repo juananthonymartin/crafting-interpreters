@@ -1,5 +1,6 @@
 package com.craftinginterpreters.lox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 abstract class Stmt {
@@ -28,9 +29,9 @@ abstract class Stmt {
     final List<Stmt> statements;
   }
   static class Class extends Stmt {
-    Class(Token name, Expr.Variable superclass, List<Stmt.Function> methods, List<Stmt.Function> classMethods) {
+    Class(Token name, ArrayList<Expr.Variable> superclasses, List<Stmt.Function> methods, List<Stmt.Function> classMethods) {
       this.name = name;
-      this.superclass = superclass;
+      this.superclasses = superclasses;
       this.methods = methods;
       this.classMethods = classMethods;
     }
@@ -41,7 +42,7 @@ abstract class Stmt {
     }
 
     final Token name;
-    final Expr.Variable superclass;
+    final ArrayList<Expr.Variable> superclasses;
     final List<Stmt.Function> methods;
     final List<Stmt.Function> classMethods;
   }

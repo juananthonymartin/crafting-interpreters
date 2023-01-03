@@ -49,10 +49,11 @@ class Parser {
 	private Stmt classDeclaration() {
 		Token name = consume(IDENTIFIER, "Expect class name.");
 		
-		Expr.Variable superclass = null;
-		if (match(LESS)) {
+		ArrayList<Expr.Variable> superclasses = new ArrayList<Expr.Variable>();
+		
+		while (match(LESS)) {
 			consume(IDENTIFIER, "Expect superclass name.");
-			superclass = new Expr.Variable(previous());
+			superclasses.add(new Expr.Variable(previous()));
 		}
 		
 		
@@ -67,7 +68,7 @@ class Parser {
 
 		consume(RIGHT_BRACE, "Expect '}' after class body.");
 
-		return new Stmt.Class(name, superclass, methods, classMethods);
+		return new Stmt.Class(name, superclasses, methods, classMethods);
 	}
 
 	private boolean checkNext(TokenType tokenType) {
