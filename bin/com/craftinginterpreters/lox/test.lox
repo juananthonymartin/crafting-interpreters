@@ -36,8 +36,8 @@ class E < A {
 
 class F < D < E {
 	DiamondProblem() {
-	    super.DiamondProblem();
-    	print "Here in E";
+	    print "Here in E";
+    	print "Here in F";
   	}
 }
 

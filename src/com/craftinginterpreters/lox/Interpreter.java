@@ -135,17 +135,23 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
 		LoxInstance object = (LoxInstance) environment.getAt(distance - 1, "this");
 
-		LoxFunction method = null;
+		ArrayList<LoxFunction> methods = new ArrayList<>();
 		for (LoxClass loxClass : superclasses) {
-			method = loxClass.findMethod(expr.method.lexeme);
-			if (method != null) break;
+			var method = loxClass.findMethod(expr.method.lexeme);
+			if (method != null) 
+				methods.add(method); 
 		}
 
-		if (method == null) {
+		if (methods.isEmpty()) {
 			throw new RuntimeError(expr.method, "Undefined property '" + expr.method.lexeme + "'.");
 		}
+		
+		if (methods.size() > 1) {
+			//TODO: add class were methods were found
+			throw new RuntimeError(expr.method, "Method found in more than one super class. Solved this by implementing the method in the child class"); 
+		}
 
-		return method.bind(object);
+		return methods.get(0).bind(object);
 
 	}
 
