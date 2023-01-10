@@ -1,3 +1,73 @@
+class A {
+  method() {
+    print "A method";
+  }
+}
+
+class B < A {
+  method() {
+    print "B method";
+  }
+
+  test() {
+    super.method();
+  }
+}
+
+class C < B {}
+
+
+C().test();
+
+
+scopes: 
+global: [ A -> A class, B -> B class, C -> C class]
+superclass: [ super -> B class]
+bound-method: [ this -> C instance]
+test()-Body: [empty] 
+
+
+
+class Doughnut {
+  cook() {
+    print "Fry until golden brown.";
+    inner(); -> created inner
+    print "Place in a nice box.";
+  }
+}
+
+class BostonCream < Doughnut {
+  // go to superclass and set inner value
+  cook() {
+    print "Pipe full of custard and coat with chocolate.";
+  }
+}
+
+BostonCream().cook();
+
+BostonCream().cook();
+
+// Figure out how to get super class environment. 
+// once there, define inner to point to child class
+// then when resolving inner, look at child class difintion from within a method
+
+//Resolver stacks only worried about mantaiing env and distance 
+//Interpreter takes local and distances from resolver 
+//And used another set of scopes to with runtime representation that gets set in class stmt
+
+//Need to add subclass in the grammar 
+//Populate if inner token found 
+//When parsing subclass set inner if super to subclass
+
+
+
+
+
+
+
+
+
+
 var b = 123;
 {
   fun add(a, b, c) {
@@ -71,7 +141,6 @@ fun thrice(fn) {
 thrice(fun (a) {
   print a;
 });
-
 
 
 

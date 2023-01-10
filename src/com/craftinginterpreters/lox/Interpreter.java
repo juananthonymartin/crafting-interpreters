@@ -134,14 +134,15 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 		LoxClass superclass = (LoxClass) environment.getAt(distance, "super");
 
 		LoxInstance object = (LoxInstance) environment.getAt(distance - 1, "this");
+		LoxFunction innercalss = (LoxFunction) environment.getAt(distance - 1, "inner");
 
-		LoxFunction method = superclass.findMethod(expr.method.lexeme);
+		LoxFunction method = superclass.findMethod(object, expr.method.lexeme);
 
 		if (method == null) {
 			throw new RuntimeError(expr.method, "Undefined property '" + expr.method.lexeme + "'.");
 		}
 
-		return method.bind(object);
+		return method.bind(object, innercalss);
 
 	}
 

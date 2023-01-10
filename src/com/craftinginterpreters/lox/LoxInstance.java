@@ -21,9 +21,10 @@ class LoxInstance {
 			return fields.get(name.lexeme);
 		}
 
-		LoxFunction method = klass.findMethod(name.lexeme);
+		var method = klass.findMethod(this, name.lexeme);
 		if (method != null)
-			return method.bind(this);
+			return method;  
+		 
 
 		throw new RuntimeError(name, "Undefined property '" + name.lexeme + "'.");
 	}

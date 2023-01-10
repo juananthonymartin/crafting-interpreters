@@ -63,7 +63,8 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 		beginScope();
 		scopes.peek().put("this", new Variable(new Token(TokenType.THIS, "this", null, 1), VariableState.READ));
-
+		scopes.peek().put("inner", new Variable(new Token(TokenType.THIS, "this", null, 1), VariableState.READ));
+		
 		for (Stmt.Function method : stmt.methods) {
 			FunctionType declaration = FunctionType.METHOD;
 			if (method.name.lexeme.equals("init")) {
@@ -235,7 +236,9 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 	@Override
 	public Void visitVariableExpr(Expr.Variable expr) {
-		if (!scopes.isEmpty() && scopes.peek().get(expr.name.lexeme).state == VariableState.DECLARED) {
+		if (!scopes.isEmpty() && 
+				scopes.peek().get(expr.name.lexeme) != null &&
+				scopes.peek().get(expr.name.lexeme).state == VariableState.DECLARED) {
 			Lox.error(expr.name, "Can't read local variable in its own initializer.");
 		}
 
